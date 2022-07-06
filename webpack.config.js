@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const miniCss = require('mini-css-extract-plugin');
+const CriticalCssPlugin = require('critical-css-webpack-plugin');
 
 module.exports = {
     mode: 'production',
@@ -12,14 +13,14 @@ module.exports = {
         rules: [
             {
                 test: /\.html$/i,
-                loader: "html-loader",
+                loader: 'html-loader',
             },
             {
                 test: /\.(scss)$/,
                 use: [
                     miniCss.loader,
-                    "css-loader",
-                    "sass-loader",
+                    'css-loader',
+                    'sass-loader',
                 ]
             },
             {
@@ -33,10 +34,26 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: "./src/index.html"
+            template: './src/index.html'
         }),
         new miniCss({
             filename: 'style.css',
+        }),
+        new CriticalCssPlugin({
+            dimensions: [
+                {
+                  height: 320,
+                  width: 568,
+                },
+                {
+                  height: 768,
+                  width: 1024,
+                },
+                {
+                  height: 1920,
+                  width: 1080,
+                },
+              ],
         }),
     ],
 };
